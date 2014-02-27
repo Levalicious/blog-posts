@@ -5,7 +5,7 @@ The easiest way of computing a bounding box for a polygon is to determine the mi
 
 ![AABB vs OMBB](http://geidav.files.wordpress.com/2014/01/aabb_vs_ombb.png)
 
-The technique for computing OMBBs presented in the following consists of two detached steps. In the first step the *convex hull* of the input polygon is computed. In the second step the *Rotating Calipers* method is employed on the convex hull to compute the resulting OMBB. I will focus on the Rotating Calipers method because it's not very widely known in comparison to the numerous ways of computing convex hulls.
+The technique for computing OMBBs presented in the following consists of two detached steps. In the first step the *convex hull* of the input polygon is computed. If the polygon is convex this step can be omitted because a convex polygon is equal to its convex hull. In the second step the *Rotating Calipers* method is employed on the convex hull to compute the resulting OMBB. I will focus on the Rotating Calipers method because it's not very widely known in comparison to the numerous ways of computing convex hulls.
 
 # Convex hulls
 In less mathematical but more illustrative terms the *convex hull* of a set of $n$ points can be described as the closed polygonal chain of all outer points of the set, which entirely encloses all set elements. You can picture it as the shape of a rubber band stretched around all set elements. The convex hull of a set of two-dimensional points can be efficiently computed in $O(n\log n)$. In the figure below the convex hull of the vertices of a concave polygon is depicted.
