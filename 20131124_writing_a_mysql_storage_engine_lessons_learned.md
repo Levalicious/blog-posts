@@ -8,6 +8,7 @@ This post documents a lot of nasty details I had to learn the hard way when I wr
 * [Single vs. multi-statement transactions](#single-vs-multi-statement-transactions)
 * [Detecting the start/end of a statement/transaction](#detecting-the-startend-of-a-statementtransaction)
 * Index key handling
+    * [Make sure to implement the `records_in_range()` approximation](#make-sure-to-implement-the-records-in-range-approximation)
     * [Keyread optimization](#keyread-optimization)
     * [Mapping row buffers to index keys](#mapping-row-buffers-to-index-keys)
     * [Comparing index keys](#comparing-index-keys)
@@ -146,6 +147,9 @@ int Commit(handlerton *hton, THD *thd, bool all)
     return 0;
 }
 ```
+
+### Make sure to implement the records-in-range approximation
+The method `records_in_range()` of the `handler` class is supposed to return an approximation of the number of rows between two keys in an index. It's used by the query optimizer to determine which table index to use for a query (e.g. for a `JOIN`). It happens easily to oversee this hugely important function, because there's a default implementation which makes it unnecessary to implement it. Unfortunately, the default implementation simply returns `10`, effectively drawing any index selection pointless.
 
 ### Keyread optimization
 Some indexes can fully reconstruct the column data from an index key. Hence, query statements that only refer to the indexed columns don't need to read the corresponding table rows from disk. This is known as *keyread optimization*. To find out whether the whole row needs to be read or if all required row columns can be fully reconstructed from the index key, the `HA_EXTRA_KEYREAD` and `HA_EXTRA_NO_KEYREAD` flags passed to the `handler::extra()` method can be checked. Additionally, the storage engine must signal to MySQL that it supports the keyread optimization by additionally returning the `HA_KEYREAD_ONLY` flag from the `handler::index_flags()` method.
