@@ -18,7 +18,7 @@ A less well known, fifth possibility is to dynamically allocate memory on the st
 * Depending on how much stack memory already got allocated by previously called "parent" functions, there is more or less stack memory left for allocation. This is especially important for dynamic stack allocations performed in recursive functions.
 * Using dynamic stack allocations might effect portability, as they are not specified by the ANSI-C standard. However, most compilers do support them.
 * No constructors and destructors are called and no `delete` or `free` is required.
-*Dynamic stack allocations cannot be performed directly inside a function call's argument list, because the allocated stack space would appear between the parameters passed to that function.
+* Dynamic stack allocations cannot be performed directly inside a function call's argument list, because the allocated stack space would appear between the parameters passed to that function.
 * Generally, when allocating more than 1 *page* (usually 4 KB) on the stack, *stack probing* is required to assure correct stack growth (more on that later).
 
 # How to do it?
