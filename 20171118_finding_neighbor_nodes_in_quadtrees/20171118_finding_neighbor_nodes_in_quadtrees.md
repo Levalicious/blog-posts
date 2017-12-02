@@ -1,17 +1,18 @@
-# Finding neighbor nodes in Quadtrees
+# Advanced Octrees 4: finding neighbor nodes
 
 ## Introduction
 
-This part of the Advanced Octrees series is about how to access neighbor nodes in Quadtrees. The algorithm can be naturally extended to Octrees, but it's easier to understand and code in just two dimensions. Neighbors are such nodes that either share an edge in horizontal (west, east) or vertical (north, south) direction, or that share a vertex in one of the four diagonal directions (north-west, north-east, south-west, south-east). See the figure below for an illustration. The node of which we want to find the neighbors is colored green. In the following this node is called *source node*. The neighbor nodes are colored red and labeled with the corresponding direction.
+Welcome to part four of the the *Advanced Octrees* series. Here you can find part [one](https://geidav.wordpress.com/2014/07/18/advanced-octrees-1-preliminaries-insertion-strategies-and-max-tree-depth/), [two](https://geidav.wordpress.com/2014/08/18/advanced-octrees-2-node-representations/) and [three](https://geidav.wordpress.com/2014/11/18/advanced-octrees-3-non-static-octrees/). In this part I show you how to access neighbor nodes in Quadtrees. The algorithm can be naturally extended to Octrees, but it's easier to understand and code in just two dimensions. Neighbors are such nodes that either share an edge in horizontal (west, east) or vertical (north, south) direction, or that share a vertex in one of the four diagonal directions (north-west, north-east, south-west, south-east). See the figure below for an illustration. The node of which we want to find the neighbors is colored green. In the following this node is called *source node*. The neighbor nodes are colored red and labeled with the corresponding direction.
+
 
 ![Different neighbor directions](neighbor_directions.png)
 
 In the literature Quadtree neighbor finding algorithms are distinguished by two properties:
 
-1. Does the algorithm operate on pointer-based Quadtrees or on linear Quadtrees? Read up on different Quadtree representations in the [second article](https://geidav.wordpress.com/2014/08/18/advanced-octrees-2-node-representations/) of this series. The algorithm discussed in this post is based on a pointer representation.
-2. Can the algorithm only find neighbors of equal or greater size, or can it also find neighbors of smaller size. We'll see later that finding neighbors of smaller size is somewhat harder.
+1. Does the algorithm operate on pointer-based Quadtrees or on linear Quadtrees? Read up on different Quadtree representations in [part two](https://geidav.wordpress.com/2014/08/18/advanced-octrees-2-node-representations/) of this series. The algorithm discussed in this post is based on a pointer representation.
+2. Can the algorithm only find neighbors of *equal or greater* size, or can it also find neighbors of *smaller* size. We'll see later that finding neighbors of smaller size is somewhat harder. Greater / equal / smaller refers to the difference in tree level between the source node and the neighbor nodes.
 
-The figure below shows examples of neighbor relationships in north direction between nodes on different tree levels. Note, that a node can have more than one neighbor per direction if the sub-tree on the other side of the north edge is deeper than the sub-tree of the source node (cf. the two examples on the right).
+The figure below shows examples of neighbor relationships in north direction between nodes on different tree levels. Note, that a node can have more than one neighbor per direction if the sub-tree on the other side of the north edge is deeper than the sub-tree of the source node.
 
 ![Examples for neighbor relationship](neighbor_examples.png)
 
@@ -82,6 +83,6 @@ def get_neighbors(self, direction):
 
 ## Complexity
 
-The complexity of this algorithm is bounded by the depth of the Quadtree. In the worst-case the source node is on the last tree level as well as the neighbor node(s), but their first common ancestor is only the root node. This is the case for any node that lies directly below/above or left/right of the line splitting the root node horizontally/vertically. See the following picture for an illustration.
+The complexity of this algorithm is bounded by the depth of the Quadtree. In the worst-case the source node and its neighbors are on the last tree level but their first common ancestor is only the root node. This is the case for any node that lies directly below/above or left/right of the line splitting the root node horizontally/vertically. See the following picture for an illustration.
 
 ![Scenario with Worst-case runtime](worst_case_scenario.png)
